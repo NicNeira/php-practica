@@ -51,7 +51,7 @@
                 <td>{{ $proyecto->user_id_last_update }}</td>
                 <td>
                     <span class="badge bg-{{ $proyecto->activo ? 'success' : 'danger' }}">
-                        {{ $proyecto->active ? 'Activo' : 'Inactivo' }}
+                        {{ $proyecto->activo ? 'Activo' : 'Inactivo' }}
                     </span>
                 </td>
                 <td>
