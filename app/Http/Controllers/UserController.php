@@ -70,7 +70,6 @@ class UserController extends Controller
       'email.email' => 'El correo no es válido',
       'password.required' => 'La contraseña es obligatoria',
       'rePassword.required' => 'Repetir la contraseña es obligatorio',
-      'dayCode.required' => 'El codigo del dia es obligatorio',
 
     ];
 
@@ -79,20 +78,12 @@ class UserController extends Controller
       'email' => 'required|email|max:100',
       'password' => 'required',
       'rePassword' => 'required',
-      'dayCode' => 'required',
     ], $mensajes);
 
-    $datos = $_request->only('nombre', 'email', 'password', 'rePassword', 'dayCode');
+    $datos = $_request->only('nombre', 'email', 'password', 'rePassword');
 
     if ($datos['password'] != $datos['rePassword']) {
       return back()->withErrors(['message' => 'Las contraseñas ingresas no son iguales']);
-    }
-
-    //Codigo del dia
-    date_default_timezone_set('America/Santiago');
-
-    if ($datos['dayCode'] != date("d")) {
-      return back()->withErrors(['message' => 'El codigo del dia no es correcto']);
     }
 
     try {
