@@ -10,11 +10,11 @@ class DeleteController extends Controller
     {
         // Encontrar el proyecto por su ID
         $proyect = Proyect::findOrFail($id);
-        
+
         // Eliminar el proyecto
         $proyect->delete();
-        
+
         // Redirigir a la página de lista de proyectos con un mensaje de éxito
-        return redirect()->route('proyects.home')->with('success', 'Proyecto eliminado correctamente');
+        return redirect()->route('proyects.list')->with('success', 'Proyecto eliminado correctamente');
     }
 }

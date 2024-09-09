@@ -11,24 +11,12 @@ class Proyect extends Model
 
     protected $fillable = [
         'nombre',
-        'fechainicio',
-        'estado',
-        'responsable',
-        'monto',
-        'created_by'
+        'descripcion',
+        'imagen',
+        'user_id_create',
+        'user_id_last_update',
+        'activo',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'fechainicio' => 'datetime',
-        ];
-    }
 
     // Relación con el modelo User (quien creó el proyecto)
     public function creator()

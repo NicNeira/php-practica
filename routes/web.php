@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Controllers\CreateController;
-use App\Http\Controllers\DeleteController;
-use App\Http\Controllers\GetbyIdController;
+
 use App\Http\Controllers\GetController;
-use App\Http\Controllers\UpdateController;
+use App\Http\Controllers\ProyectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,12 +30,26 @@ Route::middleware(['auth'])->group(function () {
     return view('usuario.info', ['user' => $user]);
   })->name('usuario.info');
 
-  Route::get('/proyects', [GetController::class, '__invoke'])->name('proyects.home');
-  Route::get('/get', GetController::class);
-  Route::get('/create', CreateController::class)->name('proyect.create');
-  Route::post('/create', [CreateController::class, 'store']);
-  Route::get('/getbyid/{Id}', GetbyIdController::class);
-  Route::delete('/proyects/{id}', [DeleteController::class, 'destroy'])->name('proyect.destroy');
-  Route::get('/proyects/{id}/edit', [UpdateController::class, '__invoke'])->name('proyect.edit');
-  Route::post('/proyects/{id}/update', [UpdateController::class, 'update'])->name('proyect.update');
+  Route::get('/proyects', [GetController::class, '__invoke'])->name('proyects.index');
+  Route::get('/proyects-config', [ProyectController::class, 'index'])->name('proyects.list');
+
+  Route::post('/proyects', [ProyectController::class, 'store'])->name('proyects.store');
+  Route::get('/proyects/create', [ProyectController::class, 'create'])->name('proyects.create');
+
+  Route::get('/proyects/{Id}', [ProyectController::class, 'show'])->name('proyects.show');
+  Route::get('/proyects/{Id}/edit', [ProyectController::class, 'edit'])->name('proyects.edit');
+  // Aquí añado la ruta PUT para actualizar
+  Route::put('/proyects/{Id}', [ProyectController::class, 'update'])->name('proyects.update');
+
+  Route::post('/proyects/{Id}/toggle-status', [ProyectController::class, 'toggleStatus']);
+  Route::delete('/proyects/{Id}', [ProyectController::class, 'destroy']);
+
+  // con backoffice
+  // Route::get('/backoffice/users', [UserController::class, 'index'])->name('usuarios.index');
+  // Route::get('/backoffice/users/get/{_id}', [UserController::class, 'getById']);
+  // Route::post('/backoffice/users/new', [UserController::class, 'create'])->name('usuarios.create');
+  // Route::post('/backoffice/users/down/{_id}', [UserController::class, 'disable'])->name('usuarios.disable');
+  // Route::post('/backoffice/users/up/{_id}', [UserController::class, 'enable'])->name('usuarios.enable');
+  // Route::post('/backoffice/users/update/{_id}', [UserController::class, 'update'])->name('usuarios.update');
+  // Route::post('/backoffice/users/delete/{_id}', [UserController::class, 'delete'])->name('usuarios.delete');
 });

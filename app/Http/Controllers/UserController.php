@@ -14,7 +14,7 @@ class UserController extends Controller
   public function formularioLogin()
   {
     if (Auth::check()) {
-      return redirect()->route('usuario.info');
+      return redirect()->route('proyects.index');
     }
     return view('usuario.login');
   }
@@ -22,7 +22,7 @@ class UserController extends Controller
   public function formularioNuevo()
   {
     if (Auth::check()) {
-      return redirect()->route('usuario.info');
+      return redirect()->route('proyects.index');
     }
     return view('usuario.create');
   }
@@ -49,7 +49,7 @@ class UserController extends Controller
         return redirect()->route('login')->withErrors(['email' => 'El usuario se encuentra desactivado, por favor contacte al administrador']);
       }
       $_request->session()->regenerate();
-      return redirect()->route('usuario.info');
+      return redirect()->route('proyects.index');
     }
     return redirect()->back()->withErrors(['email' => 'El usuario o contraseña son incorrectos']);
   }
