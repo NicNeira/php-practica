@@ -240,6 +240,18 @@
     </div>
 </div>
 
+<!-- Toast Notification -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Acción realizada correctamente.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 
@@ -247,9 +259,42 @@
 
 <script>
     $(document).ready(function() {
+
+        // Toast Notification
+        function showToast(message, isSuccess = true) {
+            var toastElement = document.getElementById('toast');
+            var toastBody = toastElement.querySelector('.toast-body');
+            var toast = new bootstrap.Toast(toastElement);
+
+            // Cambiar el color del Toast según el éxito o fallo
+            if (isSuccess) {
+                toastElement.classList.remove('bg-danger');
+                toastElement.classList.add('bg-success');
+            } else {
+                toastElement.classList.remove('bg-success');
+                toastElement.classList.add('bg-danger');
+            }
+
+            // Establecer el mensaje
+            toastBody.textContent = message;
+
+            // Mostrar el Toast
+            toast.show();
+        }
+
+
         // Create Project
         $('#submitCreate').click(function() {
-            $('#createForm').submit();
+            $('#createForm').submit(function(e) {
+                e.preventDefault(); // Evitar la recarga de la página
+
+                $.post($(this).attr('action'), $(this).serialize(), function(data) {
+                    $('#createModal').modal('hide'); // Cerrar el modal
+                    showToast('Proyecto creado exitosamente.', true); // Mostrar Toast de éxito
+                }).fail(function() {
+                    showToast('Error al crear el proyecto.', false); // Mostrar Toast de error
+                });
+            });
         });
 
         // Editar Proyecto
@@ -262,12 +307,27 @@
                 $('#edit_image_preview').attr('src', '/storage/' + data.imagen); // Muestra la imagen actual
                 $('#edit_active').val(data.activo); // Cambia el estado
                 $('#editModal').modal('show'); // Muestra el modal de edición
+            }).fail(function() {
+                showToast('Error al cargar el proyecto para editar.', false);
             });
         });
 
-
         $('#submitEdit').click(function() {
-            $('#editForm').submit();
+            $('#editForm').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $('#editForm').attr('action'),
+                    type: 'POST',
+                    data: $('#editForm').serialize(),
+                    success: function(data) {
+                        $('#editModal').modal('hide'); // Cerrar el modal
+                        showToast('Proyecto actualizado exitosamente.', true); // Mostrar Toast de éxito
+                    },
+                    error: function() {
+                        showToast('Error al actualizar el proyecto.', false); // Mostrar Toast de error
+                    }
+                });
+            });
         });
 
         // Ver Proyecto desde la tabla
@@ -294,11 +354,11 @@
 
                 // Mostramos el modal
                 $('#viewModal').modal('show');
+                showToast('Proyecto cargado correctamente.', true);
+            }).fail(function() {
+                showToast('Error al cargar el proyecto.', false);
             });
         });
-
-
-
 
         // Cambiar el estado del proyecto (activo/inactivo)
         $('.toggle-status').click(function() {
@@ -308,7 +368,10 @@
             }, function(data) {
                 if (data.success) {
                     location.reload(); // Recargar la página para actualizar el estado
+                    showToast('Estado del proyecto actualizado correctamente.', true); // Mostrar Toast de éxito
                 }
+            }).fail(function() {
+                showToast('Error al cambiar el estado del proyecto.', false);
             });
         });
 
@@ -328,6 +391,10 @@
                 },
                 success: function(result) {
                     location.reload(); // Recargar la página después de eliminar
+                    showToast('Proyecto eliminado exitosamente.', true); // Mostrar Toast de éxito
+                },
+                error: function() {
+                    showToast('Error al eliminar el proyecto.', false); // Mostrar Toast de error
                 }
             });
         });

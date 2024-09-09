@@ -67,7 +67,7 @@ class ProyectController extends Controller
       return response()->json(['success' => true, 'project' => $proyecto]);
     }
 
-    return redirect()->route('proyects.index')->with('success', 'Proyecto creado exitosamente.');
+    return redirect()->route('proyects.list')->with('success', 'Proyecto creado exitosamente.');
   }
 
   /**
@@ -142,7 +142,7 @@ class ProyectController extends Controller
       return response()->json(['success' => true, 'project' => $proyecto]);
     }
 
-    return redirect()->route('proyects.index')->with('success', 'Proyecto actualizado exitosamente.');
+    return redirect()->route('proyects.list')->with('success', 'Proyecto actualizado exitosamente.');
   }
 
   /**
