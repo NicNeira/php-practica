@@ -14,7 +14,7 @@
             <h5 class="card-title">{{ $proyecto->nombre }}</h5>
             <p class="card-text">{{ $proyecto->descripcion }}</p>
             <span class="badge bg-{{ $proyecto->activo ? 'success' : 'danger' }}">
-                {{ $proyecto->active ? 'Activo' : 'Inactivo' }}
+                {{ $proyecto->activo ? 'Activo' : 'Inactivo' }}
             </span>
         </div>
     </div>
